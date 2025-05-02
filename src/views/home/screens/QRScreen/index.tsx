@@ -1,11 +1,21 @@
 import { LoadingButton } from "@mui/lab";
-import { Box, Button, Container, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  Dialog,
+  DialogContent,
+  IconButton,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { UploadData, useUploadImage } from "@src/api/uploader";
 import { PhotoboothContext } from "@src/contexts/PhotoboothProvider";
 import { resizeBase64Image } from "@src/helpers/resizeBase64Image";
 import html2canvas from "html2canvas";
 import { QRCodeSVG } from "qrcode.react";
+import CloseIcon from "@mui/icons-material/Close";
 import React, { useContext, useRef, useState } from "react";
 
 const NativeImage = styled("img")(() => ({}));
@@ -109,6 +119,7 @@ const QRScreen = () => {
             flexWrap="wrap"
             mb={{ xs: 3, xl: "unset" }}
           >
+            {/* Instagram Feed */}
             <Stack spacing={2} alignItems="center">
               <Typography textAlign="center" fontSize="30px" color="white">
                 Instagram Feed
@@ -128,7 +139,7 @@ const QRScreen = () => {
                 <NativeImage
                   src={feedBackgroundSrc}
                   alt="feed-bg"
-                  sx={{ width: "100%", position: "absolute" }}
+                  sx={{ width: "100%", position: "absolute", boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.4)" }}
                 />
 
                 <NativeImage
@@ -137,9 +148,9 @@ const QRScreen = () => {
                   sx={{ width: "120px", position: "relative" }}
                   onLoad={() => setFeedLoaded(true)}
                 />
-              </Box> 
+              </Box>
 
-              {imageVariant.feed && openedMode !== "feed" && (
+              {imageVariant.feed && (
                 <Button
                   variant="contained"
                   color="Green200"
@@ -161,14 +172,9 @@ const QRScreen = () => {
                   Download
                 </LoadingButton>
               )}
-
-              {imageVariant.feed && openedMode === "feed" && (
-                <Stack bgcolor="white" p={1}>
-                  <QRCodeSVG value={imageVariant.feed} size={100} />
-                </Stack>
-              )}
             </Stack>
 
+            {/* Instagram Story */}
             <Stack spacing={2} alignItems="center">
               <Typography textAlign="center" fontSize="30px" color="white">
                 Instagram Story
@@ -188,7 +194,7 @@ const QRScreen = () => {
                 <NativeImage
                   src={storyBackgroundSrc}
                   alt="story-bg"
-                  sx={{ width: "100%", position: "absolute" }}
+                  sx={{ width: "100%", position: "absolute", boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.4)"}}
                 />
 
                 <NativeImage
@@ -199,7 +205,7 @@ const QRScreen = () => {
                 />
               </Box>
 
-              {imageVariant.story && openedMode !== "story" && (
+              {imageVariant.story && (
                 <Button
                   variant="contained"
                   color="Green200"
@@ -221,14 +227,9 @@ const QRScreen = () => {
                   Download
                 </LoadingButton>
               )}
-
-              {imageVariant.story && openedMode === "story" && (
-                <Box bgcolor="white" p={1}>
-                  <QRCodeSVG value={imageVariant.story} size={100} />
-                </Box>
-              )}
             </Stack>
 
+            {/* Normal Save */}
             <Stack spacing={2} alignItems="center">
               <Typography textAlign="center" fontSize="30px" color="white">
                 Save Picture
@@ -237,11 +238,11 @@ const QRScreen = () => {
               <NativeImage
                 src={photoResult || ""}
                 alt="feed-photo"
-                sx={{ width: "300px" }}
+                sx={{ width: "300px", boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.4)" }}
                 onLoad={() => setNormalLoaded(true)}
               />
 
-              {imageVariant.normal && openedMode !== "normal" && (
+              {imageVariant.normal && (
                 <Button
                   variant="contained"
                   color="Green200"
@@ -263,12 +264,6 @@ const QRScreen = () => {
                   Download
                 </LoadingButton>
               )}
-
-              {imageVariant.normal && openedMode === "normal" && (
-                <Box bgcolor="white" p={1}>
-                  <QRCodeSVG value={imageVariant.normal} size={100} />
-                </Box>
-              )}
             </Stack>
           </Stack>
 
@@ -283,6 +278,24 @@ const QRScreen = () => {
           </Button>
         </Stack>
       </Stack>
+
+      {/* QR Code Popup */}
+      <Dialog open={!!openedMode} onClose={() => setOpenedMode(null)}>
+        <DialogContent sx={{ position: "relative", p: 3 }}>
+          <IconButton
+            onClick={() => setOpenedMode(null)}
+            sx={{ position: "absolute", top: 8, right: 8 }}
+          >
+            <CloseIcon />
+          </IconButton>
+          <Stack alignItems="center" spacing={2}>
+            <Typography variant="h6">Scan QR Code</Typography>
+            {openedMode && imageVariant[openedMode] && (
+              <QRCodeSVG value={imageVariant[openedMode]} size={500} />
+            )}
+          </Stack>
+        </DialogContent>
+      </Dialog>
     </Container>
   );
 };
