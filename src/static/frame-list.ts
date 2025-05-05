@@ -11,6 +11,8 @@ export const frame: FrameType = {
       "flei/frame-1-5.png",
       "flei/frame-1-6.png",
       "flei/frame-1-7.png",
+      "flei/frame-1-8.png",
+      "flei/frame-1-9.png",
   
     ],
     2: [
@@ -22,6 +24,8 @@ export const frame: FrameType = {
       "flei/frame-2-5.png",
       "flei/frame-2-6.png",
       "flei/frame-2-7.png",
+      "flei/frame-2-8.png",
+      "flei/frame-2-9.png",
       
     ],
     4: [
@@ -33,6 +37,8 @@ export const frame: FrameType = {
       "flei/frame-4-5.png",
       "flei/frame-4-6.png",
       "flei/frame-4-7.png",
+      "flei/frame-4-8.png",
+      "flei/frame-4-9.png",
       
     ],
   },
